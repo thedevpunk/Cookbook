@@ -9,6 +9,8 @@ namespace Core.Entities
 
         public string Title { get; set; }
 
+        public string Story { get; set; }
+
         public Guid CategoryId { get; set; }
 
         public List<Ingredient> Ingredients { get; set; }
@@ -22,5 +24,7 @@ namespace Core.Entities
         public int DurationInMinutes { get; set; }
 
         public Guid UserId { get; set; }
+
+        public User Cook { get; set; }
     }
 }
