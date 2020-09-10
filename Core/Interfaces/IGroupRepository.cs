@@ -16,5 +16,17 @@ namespace Core.Interfaces
         Task UpdateGroupAsync(Group group);
 
         Task DeleteGroupAsync(Guid id);
+
+        Task AddUser(Guid userId);
+
+        Task RemoveUser(Guid userId);
+
+        Task AddAdmin(Guid userId);
+
+        Task RemoveAdmin(Guid userId);
+
+        Task AddRecipe(Guid recipeId);
+
+        Task RemoveRecipe(Guid recipeId);
     }
 }

@@ -18,5 +18,17 @@ namespace Core.Interfaces
         Task UpdateRecipeAsync(Recipe recipe);
 
         Task DeleteRecipeAsync(Guid id);
+
+        Task AddIngredient(Ingredient ingredient);
+
+        Task RemoveIngredient(Ingredient ingredient);
+
+        Task AddStep(Step step);
+
+        Task RemoveStep(Step step);
+
+        Task AddTag(Tag tag);
+
+        Task RemoveTag(Tag tag);
     }
 }
