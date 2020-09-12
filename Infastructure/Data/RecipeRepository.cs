@@ -29,7 +29,7 @@ namespace Infastructure.Data
             throw new NotImplementedException();
         }
 
-        public Task AddTagAsync(Guid id, Tag tag)
+        public Task AddTagAsync(Guid id, Core.Entities.Tag tag)
         {
             throw new NotImplementedException();
         }
@@ -69,7 +69,7 @@ namespace Infastructure.Data
             throw new NotImplementedException();
         }
 
-        public Task RemoveTagAsync(Guid id, Tag tag)
+        public Task RemoveTagAsync(Guid id, Core.Entities.Tag tag)
         {
             throw new NotImplementedException();
         }
