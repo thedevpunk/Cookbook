@@ -17,24 +17,21 @@ namespace Infastructure.Data
             _context = context;
         }
 
-        public Task CreateTagAsync(Entity.Tag tag)
+        public async Task CreateTagAsync(Entity.Tag tag)
         {
-            throw new NotImplementedException();
+            await _context.Tags.InsertOneAsync(tag);
         }
 
-        public Task DeleteTagAsync(Guid id)
+        public async Task DeleteTagAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Entity.Tag>.Filter.Eq(i => i.Id, id);
+
+            await _context.Tags.DeleteOneAsync(filter);
         }
 
         public async Task<IReadOnlyList<Entity.Tag>> GetTagsAsync()
         {
             return await _context.Tags.FindSync(new BsonDocument()).ToListAsync();
-        }
-
-        public Task UpdateTagAsync(Entity.Tag tag)
-        {
-            throw new NotImplementedException();
         }
     }
 }
