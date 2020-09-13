@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Infastructure.Data
@@ -24,59 +25,87 @@ namespace Infastructure.Data
             await _context.Recipes.UpdateOneAsync(filter, update);
         }
 
-        public Task AddStepAsync(Guid id, Step step)
+        public async Task AddStepAsync(Guid id, Step step)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, id);
+
+            var update = Builders<Recipe>.Update.Push<Step>(e => e.Steps, step);
+
+            await _context.Recipes.UpdateOneAsync(filter, update);
         }
 
-        public Task AddTagAsync(Guid id, Core.Entities.Tag tag)
+        public async Task AddTagAsync(Guid id, Core.Entities.Tag tag)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, id);
+
+            var update = Builders<Recipe>.Update.Push<Core.Entities.Tag>(e => e.Tags, tag);
+
+            await _context.Recipes.UpdateOneAsync(filter, update);
         }
 
-        public Task CreateRecipeAsync(Recipe recipe)
+        public async Task CreateRecipeAsync(Recipe recipe)
         {
-            throw new NotImplementedException();
+            await _context.Recipes.InsertOneAsync(recipe);
         }
 
-        public Task DeleteRecipeAsync(Guid id)
+        public async Task DeleteRecipeAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, id);
+
+            await _context.Recipes.DeleteOneAsync(filter);
         }
 
-        public Task<Recipe> GetRecipeByIdAsync(Guid id)
+        public async Task<Recipe> GetRecipeByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, id);
+
+            return await _context.Recipes.FindSync(filter).FirstOrDefaultAsync();
         }
 
-        public Task<IReadOnlyList<Recipe>> GetRecipesAsync()
+        public async Task<IReadOnlyList<Recipe>> GetRecipesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Recipes.FindSync(new BsonDocument()).ToListAsync();
         }
 
-        public Task<IReadOnlyList<Recipe>> GetRecipesByGroupIdAsync(Guid groupId)
+        public async Task<IReadOnlyList<Recipe>> GetRecipesByIdsAsync(List<Guid> ids)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.In(e => e.Id, ids);
+
+            return await _context.Recipes.FindSync(filter).ToListAsync();
         }
 
-        public Task RemoveIngredientAsync(Guid id, Ingredient ingredient)
+        public async Task RemoveIngredientAsync(Guid id, Ingredient ingredient)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, id);
+
+            var update = Builders<Recipe>.Update.Pull<Ingredient>(e => e.Ingredients, ingredient);
+
+            await _context.Recipes.UpdateOneAsync(filter, update);
         }
 
-        public Task RemoveStepAsync(Guid id, Step step)
+        public async Task RemoveStepAsync(Guid id, Step step)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, id);
+
+            var update = Builders<Recipe>.Update.Pull<Step>(e => e.Steps, step);
+
+            await _context.Recipes.UpdateOneAsync(filter, update);
         }
 
-        public Task RemoveTagAsync(Guid id, Core.Entities.Tag tag)
+        public async Task RemoveTagAsync(Guid id, Core.Entities.Tag tag)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, id);
+
+            var update = Builders<Recipe>.Update.Pull<Core.Entities.Tag>(e => e.Tags, tag);
+
+            await _context.Recipes.UpdateOneAsync(filter, update);
         }
 
-        public Task UpdateRecipeAsync(Recipe recipe)
+        public async Task UpdateRecipeAsync(Recipe recipe)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, recipe.Id);
+
+            await _context.Recipes.ReplaceOneAsync(filter, recipe, new ReplaceOptions{ IsUpsert = true });
         }
     }
 }

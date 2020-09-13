@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Core.Entities
 {
@@ -9,5 +10,7 @@ namespace Core.Entities
         public string Username { get; set; }
 
         public string Email { get; set; }
+
+        public List<Guid> Groups { get; set; }
     }
 }

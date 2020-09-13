@@ -9,24 +9,26 @@ namespace Core.Interfaces
     {
         Task<Group> GetGroupByIdAsync(Guid id);
 
-        Task<IReadOnlyList<Group>> GetGroupsByUserIdAsync(Guid userId);
+        Task<IReadOnlyList<Group>> GetGroupsByUserId(Guid id);
 
-        Task CreateGroupAsync(Group group);
+        Task<IReadOnlyList<Group>> GetGroupsAsync();
 
-        Task UpdateGroupAsync(Group group);
+         Task CreateGroupAsync(Group group);
 
-        Task DeleteGroupAsync(Guid id);
+         Task UpdateGroupAsync(Group group);
 
-        Task AddUser(Guid userId);
+         Task DeleteGroupAsync(Guid id);
 
-        Task RemoveUser(Guid userId);
+         Task AddAdminAsync(Guid id, User admin);
 
-        Task AddAdmin(Guid userId);
+         Task RemoveAdminAsync(Guid id, User admin);
 
-        Task RemoveAdmin(Guid userId);
+         Task AddUserAsync(Guid id, User user);
 
-        Task AddRecipe(Guid recipeId);
+         Task RemoveUserAsync(Guid id, User user);
 
-        Task RemoveRecipe(Guid recipeId);
+         Task AddRecipeAsync(Guid id, Recipe recipe);
+
+         Task RemoveRecipeAsync(Guid id, Recipe recipe);
     }
 }
