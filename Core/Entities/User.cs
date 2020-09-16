@@ -11,6 +11,6 @@ namespace Core.Entities
 
         public string Email { get; set; }
 
-        public List<Guid> Groups { get; set; }
+        public List<Guid> GroupIds { get; set; }
     }
 }

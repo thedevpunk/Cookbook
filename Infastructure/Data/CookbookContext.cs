@@ -20,5 +20,7 @@ namespace Infastructure.Data
         public IMongoCollection<Core.Entities.Tag> Tags => _database.GetCollection<Core.Entities.Tag>("Tags");
 
         public IMongoCollection<Group> Groups => _database.GetCollection<Group>("Groups");
+
+        public IMongoCollection<User> Users => _database.GetCollection<User>("Users");
     }
 }
