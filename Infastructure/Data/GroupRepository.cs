@@ -18,6 +18,8 @@ namespace Infastructure.Data
 
         public async Task AddAdminAsync(Guid id, Guid adminId)
         {
+            // TODO: Check if admin is already a user in this group
+
             var filter = Builders<Group>.Filter.Eq(e => e.Id, id);
 
             var update = Builders<Group>.Update.Push<Guid>(e => e.AdminIds, adminId);
@@ -36,11 +38,20 @@ namespace Infastructure.Data
 
         public async Task AddUserAsync(Guid id, Guid userId)
         {
+            // Add userId to group
             var filter = Builders<Group>.Filter.Eq(e => e.Id, id);
 
             var update = Builders<Group>.Update.Push<Guid>(e => e.UserIds, userId);
 
             await _context.Groups.UpdateOneAsync(filter, update);
+
+            // TODO: Should this logic remain in this repo?
+            // Add groupId to user
+            var filterUser = Builders<User>.Filter.Eq(e => e.Id, userId);
+
+            var updateUser = Builders<User>.Update.Push<Guid>(e => e.GroupIds, id);
+
+            await _context.Users.UpdateOneAsync(filterUser, updateUser);
         }
 
         public async Task CreateGroupAsync(Group group)
@@ -94,11 +105,20 @@ namespace Infastructure.Data
 
         public async Task RemoveUserAsync(Guid id, Guid userId)
         {
+            // Remove userId from group
             var filter = Builders<Group>.Filter.Eq(e => e.Id, id);
 
             var update = Builders<Group>.Update.Pull<Guid>(e => e.UserIds, userId);
 
             await _context.Groups.UpdateOneAsync(filter, update);
+
+            // TODO: Should this logic remain in this repo?
+            // Remove groupId from user
+            var filterUser = Builders<User>.Filter.Eq(e => e.Id, userId);
+
+            var updateUser = Builders<User>.Update.Pull<Guid>(e => e.GroupIds, id);
+
+            await _context.Users.UpdateOneAsync(filterUser, updateUser);
         }
 
         public async Task UpdateGroupAsync(Group group)

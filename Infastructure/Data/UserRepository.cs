@@ -12,7 +12,6 @@ namespace Infastructure.Data
         public UserRepository(CookbookContext context)
         {
             _context = context;
-
         }
 
         public async Task AddGroupToUser(Guid id, Guid groupId)
