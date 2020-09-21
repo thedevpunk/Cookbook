@@ -107,5 +107,14 @@ namespace Infastructure.Data
 
             await _context.Recipes.ReplaceOneAsync(filter, recipe, new ReplaceOptions{ IsUpsert = true });
         }
+
+        public async Task<bool> ExistsAsync(Guid id)
+        {
+            var filter = Builders<Recipe>.Filter.Eq(e => e.Id, id);
+
+            var recipe = await _context.Recipes.Find(filter).FirstOrDefaultAsync();
+
+            return recipe == null ? false : true;
+        }
     }
 }

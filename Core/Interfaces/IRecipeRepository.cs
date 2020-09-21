@@ -30,5 +30,7 @@ namespace Core.Interfaces
         Task AddTagAsync(Guid id, Tag tag);
 
         Task RemoveTagAsync(Guid id, Tag tag);
+
+        Task<bool> ExistsAsync(Guid id);
     }
 }

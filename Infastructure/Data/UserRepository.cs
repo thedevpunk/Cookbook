@@ -38,5 +38,14 @@ namespace Infastructure.Data
 
             await _context.Users.UpdateOneAsync(filter, update);
         }
+
+        public async Task<bool> ExistsAsync(Guid id)
+        {
+            var filter = Builders<User>.Filter.Eq(e => e.Id, id);
+
+            var user = await _context.Users.Find(filter).FirstOrDefaultAsync();
+
+            return user == null ? false : true;
+        }
     }
 }

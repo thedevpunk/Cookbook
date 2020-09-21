@@ -11,5 +11,7 @@ namespace Core.Interfaces
         Task AddGroupToUser(Guid id, Guid groupId);
 
         Task RemoveGroupFromUser(Guid id, Guid groupId);
+
+        Task<bool> ExistsAsync(Guid id);
     }
 }
