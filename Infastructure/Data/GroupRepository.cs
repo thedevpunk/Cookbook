@@ -127,5 +127,19 @@ namespace Infastructure.Data
 
             await _context.Groups.ReplaceOneAsync(filter, group);
         }
+
+        public async Task<bool> IsUserInGroupAsync(Guid id, Guid userId)
+        {
+            var filterUser = Builders<User>.Filter.Eq(e => e.Id, userId);
+
+            var user = await _context.Users.FindSync(filterUser).FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                return user.GroupIds.Exists(e => e == id);
+            }
+
+            return false;
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
@@ -67,6 +68,29 @@ namespace Infastructure.Data
             return await _context.Recipes.FindSync(new BsonDocument()).ToListAsync();
         }
 
+        public async Task<IReadOnlyList<Recipe>> GetRecipesByUserIdAsync(Guid userId)
+        {
+            var filterUser = Builders<User>.Filter.Eq(e => e.Id, userId);
+
+            var user = await _context.Users.FindSync(filterUser).FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                throw new Exception("User does not exitst.");
+
+                return new List<Recipe>();
+            }
+
+            var filterGroups = Builders<Group>.Filter.In(e => e.Id, user.GroupIds);
+
+            var groups = await _context.Groups.FindSync(filterGroups).ToListAsync();
+
+            var recipeIds = new List<Guid>();
+            groups.ForEach(e => recipeIds.AddRange(e.RecipeIds));
+
+            return await GetRecipesByIdsAsync(recipeIds);
+        }
+
         public async Task<IReadOnlyList<Recipe>> GetRecipesByIdsAsync(List<Guid> ids)
         {
             var filter = Builders<Recipe>.Filter.In(e => e.Id, ids);
@@ -105,7 +129,7 @@ namespace Infastructure.Data
         {
             var filter = Builders<Recipe>.Filter.Eq(e => e.Id, recipe.Id);
 
-            await _context.Recipes.ReplaceOneAsync(filter, recipe, new ReplaceOptions{ IsUpsert = true });
+            await _context.Recipes.ReplaceOneAsync(filter, recipe, new ReplaceOptions { IsUpsert = true });
         }
 
         public async Task<bool> ExistsAsync(Guid id)

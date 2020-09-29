@@ -30,5 +30,7 @@ namespace Core.Interfaces
          Task AddRecipeAsync(Guid id, Guid recipeId);
 
          Task RemoveRecipeAsync(Guid id, Guid recipeId);
+
+         Task<bool> IsUserInGroupAsync(Guid id, Guid userId);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Dtos;
 using Core.Entities;
@@ -17,12 +18,20 @@ namespace Api.Controllers
             _recipeRepo = recipeRepo;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes()
+        {
+            throw new NotImplementedException();
+
+            // return await _recipeRepo.GetRecipesAsync();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateRecipe(CreateRecipeDto recipeDto)
         {
             if(await _recipeRepo.ExistsAsync(recipeDto.Id))
             {
-                return Conflict();
+                return Conflict("Recipe already exists!");
             }
 
             var recipe = new Recipe
