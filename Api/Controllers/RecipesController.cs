@@ -12,10 +12,12 @@ namespace Api.Controllers
     [Route("api/v1/[controller]")]
     public class RecipesController : ControllerBase
     {
+        private readonly IRecipeService _recipeService;
         private readonly IRecipeRepository _recipeRepo;
-        public RecipesController(IRecipeRepository recipeRepo)
+        public RecipesController(IRecipeService recipeService, IRecipeRepository recipeRepo)
         {
             _recipeRepo = recipeRepo;
+            _recipeService = recipeService;
         }
 
         [HttpGet]
@@ -23,7 +25,7 @@ namespace Api.Controllers
         {
             var user = TestData.TestUser;
 
-            var recipes = await _recipeRepo.GetRecipesByUserIdAsync(user.Id);
+            var recipes = await _recipeService.GetRecipesForUserAsync(user.Id);
 
             return Ok(recipes);
         }
@@ -33,9 +35,9 @@ namespace Api.Controllers
         {
             var user = TestData.TestUser;
 
-            var recipe = await _recipeRepo.GetRecipeByUserIdAsync(id, user.Id);
+            var recipe = await _recipeRepo.GetRecipeByIdAsync(id);
 
-            if(recipe == null)
+            if (recipe == null)
             {
                 return BadRequest("Not available");
             }
@@ -46,7 +48,7 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRecipe(CreateRecipeDto recipeDto)
         {
-            if(await _recipeRepo.ExistsAsync(recipeDto.Id))
+            if (await _recipeRepo.ExistsAsync(recipeDto.Id))
             {
                 return Conflict("Recipe already exists!");
             }
