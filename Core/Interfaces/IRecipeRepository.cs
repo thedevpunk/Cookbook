@@ -11,6 +11,10 @@ namespace Core.Interfaces
 
         Task<IReadOnlyList<Recipe>> GetRecipesByIdsAsync(List<Guid> ids);
 
+        Task<Recipe> GetRecipeByUserIdAsync(Guid id, Guid userId);
+
+        Task<IReadOnlyList<Recipe>> GetRecipesByUserIdAsync(Guid userId);
+
         Task<IReadOnlyList<Recipe>> GetRecipesAsync();
 
         Task CreateRecipeAsync(Recipe recipe);

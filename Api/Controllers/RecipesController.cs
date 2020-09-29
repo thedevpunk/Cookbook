@@ -21,9 +21,26 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes()
         {
-            throw new NotImplementedException();
+            var user = TestData.TestUser;
 
-            // return await _recipeRepo.GetRecipesAsync();
+            var recipes = await _recipeRepo.GetRecipesByUserIdAsync(user.Id);
+
+            return Ok(recipes);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Recipe>> GetRecipe(Guid id)
+        {
+            var user = TestData.TestUser;
+
+            var recipe = await _recipeRepo.GetRecipeByUserIdAsync(id, user.Id);
+
+            if(recipe == null)
+            {
+                return BadRequest("Not available");
+            }
+
+            return Ok(recipe);
         }
 
         [HttpPost]
